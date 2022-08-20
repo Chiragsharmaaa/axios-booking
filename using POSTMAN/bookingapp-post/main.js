@@ -10,13 +10,24 @@ submit.addEventListener('click', onSubmit);
 
 // DOM Content Loaded Event Listener: it updates the page with localstorage
 // history every time the page is launched (helps keep track of pre existing data)
-document.addEventListener('DOMContentLoaded', function(){
-    let AllkeysInLocalStorage = Object.keys(localStorage); //returns array of keys
-    AllkeysInLocalStorage.forEach(function (key) {
-        let keyFromLocal = localStorage.getItem(key);
-        let parsedData = JSON.parse(keyFromLocal);
-        appendList(parsedData);
-    });
+document.addEventListener('DOMContentLoaded', async function(){
+
+    axios.get('https://crudcrud.com/api/68035133cc1a41c0a8debcdf2fc105b3/appoinmentData')
+    .then((res) =>{
+        console.log(res)
+
+        for(var i=0; i<res.data.length; i++) {
+            console.log(appendList(res.data[i]));
+        }
+    })
+    .catch((err) => console.log(err))
+
+    // let AllkeysInLocalStorage = Object.keys(localStorage); //returns array of keys
+    // AllkeysInLocalStorage.forEach(function (key) {
+    //     let keyFromLocal = localStorage.getItem(key);
+    //     let parsedData = JSON.parse(keyFromLocal);
+    //     appendList(parsedData);
+    // });
 });
 
 //On-submit function:
@@ -82,7 +93,7 @@ function appendList(myObj) {
     innerDiv.appendChild(editButton);
     innerDiv.appendChild(deleteButton);
 
-    axios.post('https://crudcrud.com/api/f5396c49789540febcdcc08a4614cd86/appoinmentData', { myObj, stringifiedData })
+    axios.post('https://crudcrud.com/api/68035133cc1a41c0a8debcdf2fc105b3/appoinmentData', {myObj})
     .then((response) => {
         console.log(response)
     }).catch(err => console.log(err))
